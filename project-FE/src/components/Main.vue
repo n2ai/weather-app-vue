@@ -1,9 +1,48 @@
 <script setup>
-import { nextTick, reactive, ref } from "vue";
+import { nextTick, onMounted, reactive, ref, TrackOpTypes } from "vue";
 import NotFoundLocation from './NotFoundLocation.vue'
+import FoundLocation from './FoundLocation.vue'
 const data = ref(null)
 
-fetch()
+const weatherData = ref(null)
+const foundData = ref(false)
+
+const fetchWeatherData = async ()=>{
+    const apiKey = import.meta.env.VITE_WEATHER_API
+    const city = "Berlin"
+    //Will get back later
+    // const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
+    // try{
+    //     const response = await fetch(url)
+    //     if(!response.ok){
+    //         throw new Error('Network response was not ok');
+    //     }
+
+    //     const data = await response.json();
+    //     weatherData.value = data
+    //     foundData.value = true
+
+    //     //Get Temperature:
+    //     //weatherData.value.main.temp
+
+    //     //Get Condition:
+    //     //weatherData.value.weather[0].main
+
+    //     //Get wind speed:
+    //     //weatherData.value.wind.speed
+
+    //     //Get Humidity:
+    //     //weatherData.value.main.humidity
+    //     console.log(weatherData.value)
+    // }catch(err){
+    //     foundData.value = false
+    //     console.log(err)
+    // }
+}
+
+onMounted(()=>{
+    fetchWeatherData()
+})
 
 </script>
 
@@ -20,6 +59,7 @@ fetch()
 
         <div class="container">
             <!-- <NotFoundLocation></NotFoundLocation> -->
+             <FoundLocation condition="Cloud" ></FoundLocation>
         </div>
 
         <div class="container weather_attributes"> 
