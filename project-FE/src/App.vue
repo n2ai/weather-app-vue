@@ -1,6 +1,7 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+
 import Main from './components/Main.vue';
+
 </script>
 
 <template>
@@ -13,7 +14,7 @@ import Main from './components/Main.vue';
 
 <style scoped>
 .background_div{
-  width: 100vh;
+  width: 100%;
   height: 100vh;
   display: flex;
   justify-content: center;
