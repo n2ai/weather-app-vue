@@ -11,11 +11,11 @@ const props = defineProps({
 })
 
 const imgUrl = (weatherCondition)=>{
-    
+    console.log(weatherCondition)
     switch(weatherCondition){
         case "Clear":
             return ClearImg
-        case "Cloud":
+        case "Clouds":
             return CloudImg
         case "Mist":
             return MistImg  
@@ -31,21 +31,36 @@ const imgUrl = (weatherCondition)=>{
 
 <template>
     <div class="weather_contents">
-        <div>
-            img section
-            <img :src="imgUrl(condition)">
+        <div class="weather_img_container">
+            <img class="weather_img" :src="imgUrl(condition)">
         </div>
 
-        <div>  
-            temp section
+        <div class="weather_temp_container">  
+            <h1 class="weather_temp">{{ `${temperature}${'&#8451;'}` }}</h1>
         </div>
             
-        <div> 
-            description
+        <div class="weather_desc_container"> 
+            <p class="weather_desc">{{ description }}</p>
         </div>
     </div>
 </template>
 
 <style scoped>
+.weather_img{
+    width: 150px;
+    height: 150px;
+}
+
+.weather_temp_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.weather_desc_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 </style>

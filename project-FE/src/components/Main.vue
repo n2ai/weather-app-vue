@@ -1,49 +1,34 @@
 <script setup>
-import { nextTick, onMounted, reactive, ref, TrackOpTypes } from "vue";
-import NotFoundLocation from './NotFoundLocation.vue'
-import FoundLocation from './FoundLocation.vue'
-const data = ref(null)
+import { ref } from 'vue';
+import FoundLocation from './FoundLocation.vue';
+import NotFoundLocation from './NotFoundLocation.vue';
 
-const weatherData = ref(null)
-const foundData = ref(false)
-
-const fetchWeatherData = async ()=>{
-    const apiKey = import.meta.env.VITE_WEATHER_API
-    const city = "Berlin"
-    //Will get back later
-    // const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`
-    // try{
-    //     const response = await fetch(url)
-    //     if(!response.ok){
-    //         throw new Error('Network response was not ok');
-    //     }
-
-    //     const data = await response.json();
-    //     weatherData.value = data
-    //     foundData.value = true
-
-    //     //Get Temperature:
-    //     //weatherData.value.main.temp
-
-    //     //Get Condition:
-    //     //weatherData.value.weather[0].main
-
-    //     //Get wind speed:
-    //     //weatherData.value.wind.speed
-
-    //     //Get Humidity:
-    //     //weatherData.value.main.humidity
-    //     console.log(weatherData.value)
-    // }catch(err){
-    //     foundData.value = false
-    //     console.log(err)
-    // }
+const weatherData = ref(null);
+const foundData = ref(false);
+const city = ref('')
+const onChangeInput = (event)=>{
+    city.value = event.target.value
 }
 
-onMounted(()=>{
-    fetchWeatherData()
-})
+const fetchWeatherData = async () => {
+  const apiKey = import.meta.env.VITE_WEATHER_API;
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&appid=${apiKey}&units=metric`;
 
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data = await response.json();
+    weatherData.value = data;
+    foundData.value = true;
+    console.log(weatherData)
+  } catch (err) {
+    foundData.value = false;
+    console.error('Error fetching weather data:', err);
+  }
+};
 </script>
 
 <template>
@@ -51,30 +36,57 @@ onMounted(()=>{
         <div class="container"> 
             <div class="weather_card_search"> 
                 <font-awesome-icon icon="location-dot"/>
-                <input class="search_bar" placeholder="Enter your location"/>
-                <font-awesome-icon icon="magnifying-glass" />
-            </div>
+                <input @input="onChangeInput" class="search_bar" placeholder="Enter your location"/>
+                <button @click="fetchWeatherData" type="button" class="search_button">
+                    <font-awesome-icon icon="magnifying-glass" />
+                </button>
+            </div>  
         </div>
         
 
         <div class="container">
             <!-- <NotFoundLocation></NotFoundLocation> -->
-             <FoundLocation condition="Cloud" ></FoundLocation>
+
+            <FoundLocation
+                v-if="foundData"
+                :condition="weatherData.weather[0].main"
+                :description="weatherData.weather[0].description"
+                :temperature="weatherData.main.temp"
+            />
+            <NotFoundLocation v-else />
         </div>
 
-        <div class="container weather_attributes"> 
-            <div> 
-                Humidity
+        <div v-if="foundData" class="container weather_attributes"> 
+            <div class="weather_humidity"> 
+                <div>
+                    <p>Humidity</p>
+                </div>
+
+                <div>
+                     <p>{{ weatherData.main.humidity }}</p>
+                     <font-awesome-icon icon="temperature-0" />
+                </div>
             </div>
 
-            <div>
-                Wind Speed
+            <div class="weather_wind">
+                <div>
+                    <p>Wind Speed</p>
+                </div>
+
+                <div>
+                     <p>{{ weatherData.wind.speed }}</p>
+                     <font-awesome-icon icon="temperature-0" />
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+.weather_attributes{
+    font-size: 14px;
+}
+
 .weather_card{
     width: 350px;
     height: 500px;
@@ -107,5 +119,14 @@ onMounted(()=>{
     border-style: solid;
     border-width: thin;
     padding: 10px;
+}
+
+.search_button{
+    width: 25px;
+    height: 25px;
+    border:none;
+    padding: none;
+    cursor: pointer;
+    background: none;
 }
 </style>

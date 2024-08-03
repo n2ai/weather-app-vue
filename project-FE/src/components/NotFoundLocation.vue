@@ -19,5 +19,15 @@ import errorImg from '../../images/404.png'
 </template>
 
 <style scoped>
+.notFound_header_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.notFound_image{
+    width: 300px;
+    height: 200px;
+}
 
 </style>
