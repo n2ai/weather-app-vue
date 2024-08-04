@@ -56,26 +56,26 @@ const fetchWeatherData = async () => {
             <NotFoundLocation v-else />
         </div>
 
-        <div v-if="foundData" class="container weather_attributes"> 
-            <div class="weather_humidity"> 
+        <div v-if="foundData" class=" weather_attributes"> 
+            <div class="weather_attributes_content"> 
                 <div>
                     <p>Humidity</p>
                 </div>
 
                 <div>
-                     <p>{{ weatherData.main.humidity }}</p>
+                     <p>{{ `${weatherData.main.humidity} %` }}</p>
                      <font-awesome-icon icon="temperature-0" />
                 </div>
             </div>
 
-            <div class="weather_wind">
+            <div class="weather_attributes_content">
                 <div>
                     <p>Wind Speed</p>
                 </div>
 
                 <div>
-                     <p>{{ weatherData.wind.speed }}</p>
-                     <font-awesome-icon icon="temperature-0" />
+                     <p>{{ `${weatherData.wind.speed} Km/h` }}</p>
+                     <font-awesome-icon icon="wind" />
                 </div>
             </div>
         </div>
@@ -83,8 +83,18 @@ const fetchWeatherData = async () => {
 </template>
 
 <style scoped>
+.weather_attributes_content{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
 .weather_attributes{
     font-size: 14px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
 }
 
 .weather_card{
